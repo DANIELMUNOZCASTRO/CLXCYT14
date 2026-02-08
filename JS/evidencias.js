@@ -139,8 +139,9 @@ form.addEventListener("submit", async (e) => {
     const data = await res.json().catch(() => ({}));
 
     if (!res.ok) {
-      statusEl.textContent = "Error: " + (data.error || "No se pudo subir");
+      statusEl.textContent = "Error: " + (data.error || "No se pudo subir") + (data.message ? ` (${data.message})` : "");
       console.log("Detalle upload:", data);
+
       return;
     }
 
