@@ -5,15 +5,15 @@ const filesBody = document.getElementById("filesBody");
 const viewerFrame = document.getElementById("viewerFrame");
 const viewerName = document.getElementById("viewerName");
 
-function isPreviewableByUrl(url) {
-  const u = (url || "").toLowerCase();
+function isPreviewableByName(name) {
+  const n = (name || "").toLowerCase();
   return (
-    u.endsWith(".pdf") ||
-    u.endsWith(".png") ||
-    u.endsWith(".jpg") ||
-    u.endsWith(".jpeg") ||
-    u.endsWith(".webp") ||
-    u.endsWith(".gif")
+    n.endsWith(".pdf") ||
+    n.endsWith(".png") ||
+    n.endsWith(".jpg") ||
+    n.endsWith(".jpeg") ||
+    n.endsWith(".webp") ||
+    n.endsWith(".gif")
   );
 }
 
@@ -23,11 +23,10 @@ function setPreview(file) {
 
   viewerName.textContent = name;
 
-  if (url && isPreviewableByUrl(url)) {
+  if (url && isPreviewableByName(name)) {
     viewerFrame.style.display = "block";
     viewerFrame.src = url;
   } else {
-    // No se puede previsualizar en iframe -> abrir en nueva pestaña
     viewerFrame.style.display = "none";
     viewerFrame.src = "about:blank";
     if (url) window.open(url, "_blank");
@@ -40,10 +39,8 @@ async function moverARespaldo(file) {
   );
   if (!seguro) return;
 
-  // limpiar visor
   viewerFrame.src = "about:blank";
   viewerName.textContent = "Ningún archivo seleccionado";
-
   statusEl.textContent = "Moviendo a RESPALDO...";
 
   try {
@@ -56,7 +53,7 @@ async function moverARespaldo(file) {
     const data = await res.json().catch(() => ({}));
 
     if (!res.ok) {
-      alert("No se pudo mover: " + (data.error || "Error"));
+      alert("No se pudo mover: " + (data.error || "Error") + (data.message ? ` (${data.message})` : ""));
       console.log("Detalle move:", data);
       statusEl.textContent = "";
       return;
@@ -100,12 +97,12 @@ async function cargarLista() {
       btnVer.textContent = "Ver";
       btnVer.onclick = () => setPreview(file);
 
-      const aDown = document.createElement("a");
-      aDown.className = "btn-small outline";
-      aDown.textContent = "Abrir";
-      aDown.href = file.secure_url;
-      aDown.target = "_blank";
-      aDown.rel = "noopener";
+      const aOpen = document.createElement("a");
+      aOpen.className = "btn-small outline";
+      aOpen.textContent = "Abrir";
+      aOpen.href = file.secure_url;
+      aOpen.target = "_blank";
+      aOpen.rel = "noopener";
 
       const btnMove = document.createElement("button");
       btnMove.type = "button";
@@ -113,9 +110,8 @@ async function cargarLista() {
       btnMove.textContent = "Eliminar";
       btnMove.onclick = () => moverARespaldo(file);
 
-      tdActions.append(btnVer, aDown, btnMove);
+      tdActions.append(btnVer, aOpen, btnMove);
       tr.append(tdName, tdActions);
-      tr.appendChild(tdActions);
       filesBody.appendChild(tr);
     });
   } catch (e) {
@@ -139,9 +135,9 @@ form.addEventListener("submit", async (e) => {
     const data = await res.json().catch(() => ({}));
 
     if (!res.ok) {
-      statusEl.textContent = "Error: " + (data.error || "No se pudo subir") + (data.message ? ` (${data.message})` : "");
+      statusEl.textContent =
+        "Error: " + (data.error || "No se pudo subir") + (data.message ? ` (${data.message})` : "");
       console.log("Detalle upload:", data);
-
       return;
     }
 

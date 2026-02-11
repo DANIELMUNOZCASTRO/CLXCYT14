@@ -7,7 +7,8 @@ const cloudinary = require("cloudinary").v2;
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Cloudinary usa CLOUDINARY_URL (ya lo pusiste en Render)
+// Cloudinary usa CLOUDINARY_URL (Render Environment)
+console.log("CLOUDINARY_URL set:", !!process.env.CLOUDINARY_URL);
 cloudinary.config({ secure: true });
 
 // Static desde raíz del repo
@@ -26,14 +27,26 @@ const upload = multer({ storage: multer.memoryStorage() });
 const FOLDER_RECURSOS = "CELEX/RECURSOS";
 const FOLDER_RESPALDO = "CELEX/RESPALDO";
 
+// Subida con nombre original + extensión
 function uploadBufferToCloudinary({ buffer, filename }) {
   return new Promise((resolve, reject) => {
+    const original = filename || "archivo";
+
+    const ext = path.extname(original).toLowerCase().replace(".", ""); // pdf, jpg...
+    const base = path
+      .basename(original, path.extname(original))
+      .replace(/[^\w\-()\s.]/g, "_")
+      .trim()
+      .replace(/\s+/g, "_");
+
+    const safeBase = base || "archivo";
+    const publicId = `${FOLDER_RECURSOS}/${Date.now()}_${safeBase}`; // evita colisiones
+
     const stream = cloudinary.uploader.upload_stream(
       {
-        folder: FOLDER_RECURSOS,
+        public_id: publicId,        // fuerza nombre
         resource_type: "raw",
-        use_filename: true,
-        unique_filename: true,
+        format: ext || undefined,   // mantiene extensión
         overwrite: false,
       },
       (err, result) => {
@@ -41,6 +54,7 @@ function uploadBufferToCloudinary({ buffer, filename }) {
         resolve(result);
       }
     );
+
     Readable.from(buffer).pipe(stream);
   });
 }
@@ -54,11 +68,22 @@ app.post("/api/upload", upload.array("files"), async (req, res) => {
 
     const saved = [];
     for (const f of req.files) {
-      const r = await uploadBufferToCloudinary({ buffer: f.buffer, filename: f.originalname });
-      saved.push({ public_id: r.public_id, secure_url: r.secure_url, original_filename: r.original_filename });
+      const r = await uploadBufferToCloudinary({
+        buffer: f.buffer,
+        filename: f.originalname,
+      });
+
+      saved.push({
+        public_id: r.public_id,
+        secure_url: r.secure_url,
+        original_filename: f.originalname,
+        format: path.extname(f.originalname).replace(".", "").toLowerCase(),
+      });
     }
+
     res.json({ ok: true, saved });
   } catch (e) {
+    console.error("UPLOAD ERROR:", e);
     res.status(500).json({ error: "Error subiendo a Cloudinary", message: e.message });
   }
 });
@@ -74,7 +99,7 @@ app.get("/api/files", async (req, res) => {
 
     const files = (r.resources || []).map((x) => ({
       public_id: x.public_id,
-      filename: (x.filename ? `${x.filename}.${x.format || ""}` : x.public_id.split("/").pop()).replace(/\.$/, ""),
+      filename: `${x.original_filename || x.filename || x.public_id.split("/").pop()}.${x.format || ""}`.replace(/\.$/, ""),
       secure_url: x.secure_url,
       created_at: x.created_at,
       bytes: x.bytes,
@@ -82,6 +107,7 @@ app.get("/api/files", async (req, res) => {
 
     res.json({ files });
   } catch (e) {
+    console.error("FILES ERROR:", e);
     res.status(500).json({ error: "Error listando Cloudinary", message: e.message });
   }
 });
@@ -102,6 +128,7 @@ app.post("/api/move-to-respaldo", express.json(), async (req, res) => {
 
     res.json({ ok: true, moved_to: out.public_id });
   } catch (e) {
+    console.error("MOVE ERROR:", e);
     res.status(500).json({ error: "No se pudo mover a RESPALDO", message: e.message });
   }
 });
