@@ -16,19 +16,18 @@ body{
   color: var(--text);
 }
 
-/* ENCABEZADO (SOLO LOGO CECyT 14) */
-.site-header.single-logo{
-  display: flex;
-  flex-direction: column;
+.site-header{
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 18px;
-  padding: 36px 20px 10px;
+  gap: 28px;
+  padding: 28px 40px 8px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .logo-header{
-  height: 130px;
+  height: 110px;
   width: auto;
   object-fit: contain;
 }
@@ -57,7 +56,6 @@ body{
   font-weight: 500;
 }
 
-/* TOPBAR */
 .topbar{
   max-width: 1200px;
   margin: 0 auto;
@@ -98,14 +96,12 @@ body{
 }
 .btn-outline:hover{ background: rgba(117,9,70,.04); }
 
-/* WRAP */
 .wrap{
   max-width: 1200px;
   margin: 0 auto;
   padding: 26px 40px 30px;
 }
 
-/* HERO */
 .hero{
   display: grid;
   gap: 10px;
@@ -132,7 +128,6 @@ body{
   border-radius: 999px;
 }
 
-/* GRID TILES */
 .grid{
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -183,7 +178,6 @@ body{
   color: var(--muted);
 }
 
-/* FOOTER */
 .footer{
   text-align: center;
   font-size: 13px;
@@ -191,12 +185,24 @@ body{
   margin: 18px 0 26px;
 }
 
-/* RESPONSIVE */
 @media (max-width: 1000px){
   .grid{ grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 720px){
+  .site-header{
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 22px 16px 0;
+  }
+
+  .logo-header{
+    height: 96px;
+    margin: 0 auto;
+  }
+
+  .header-text h1{ font-size: 36px; }
+
   .topbar{
     padding: 8px 16px 0;
     flex-direction: column;
@@ -204,12 +210,6 @@ body{
   }
 
   .wrap{ padding: 18px 16px 26px; }
-
-  .logo-header{
-    height: 110px;
-  }
-
-  .header-text h1{ font-size: 36px; }
 }
 
 @media (max-width: 520px){

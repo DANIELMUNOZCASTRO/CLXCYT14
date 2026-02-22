@@ -4,23 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CELEX – Inicio</title>
-
-  <link rel="stylesheet" href="../CSS/inicio.css">
+  <link rel="stylesheet" href="/CSS/inicio.css">
 </head>
 <body>
 
-  <!-- ENCABEZADO -->
-  <header class="site-header single-logo">
-    <img src="../RECURSOS/Logo_cecyt14.png" alt="CECyT 14" class="logo-header">
+  <header class="site-header">
+    <img src="/LOGOS/LogoIPN.png" alt="IPN" class="logo-header">
 
     <div class="header-text">
       <h1>CELEX</h1>
       <h2>Centro de Lenguas Extranjeras</h2>
       <h3>CECyT No. 14 · Luis Enrique Erro</h3>
     </div>
+
+    <img src="/LOGOS/LogoCecyt14.png" alt="CECyT 14" class="logo-header">
   </header>
 
-  <!-- BARRA SUPERIOR -->
   <section class="topbar">
     <div class="topbar-left">
       <span class="badge">Sistema CELEX</span>
@@ -30,16 +29,11 @@
 
     <div class="topbar-right">
       <span class="user">Usuario: <b>EdwinClx</b></span>
-      <button class="btn-outline" id="logoutBtn" type="button">
-        Cerrar sesión
-      </button>
+      <button class="btn-outline" id="logoutBtn" type="button">Cerrar sesión</button>
     </div>
   </section>
 
-  <!-- CONTENIDO -->
   <main class="wrap">
-
-    <!-- BIENVENIDA -->
     <section class="hero">
       <div class="hero-text">
         <h4>Bienvenido</h4>
@@ -48,9 +42,7 @@
       <div class="hero-line"></div>
     </section>
 
-    <!-- MÓDULOS -->
     <section class="grid">
-
       <a class="tile" href="#">
         <div class="tile-icon">A</div>
         <div class="tile-body">
@@ -67,14 +59,13 @@
         </div>
       </a>
 
-      <a class="tile" href="evidencias.html">
+      <a class="tile" href="/HTML/evidencias.html">
         <div class="tile-icon">E</div>
         <div class="tile-body">
-            <h5>Evidencias</h5>
-            <p>Subir y administrar</p>
+          <h5>Evidencias</h5>
+          <p>Subir y administrar</p>
         </div>
-        </a>
-
+      </a>
 
       <a class="tile" href="#">
         <div class="tile-icon">L</div>
@@ -83,18 +74,14 @@
           <p>Captura y reportes</p>
         </div>
       </a>
-
     </section>
-
   </main>
 
-  <footer class="footer">
-    © 2026 Instituto Politécnico Nacional
-  </footer>
+  <footer class="footer">© 2026 Instituto Politécnico Nacional</footer>
 
   <script>
     document.getElementById("logoutBtn").addEventListener("click", function () {
-      window.location.href = "login.html";
+      window.location.href = "/HTML/login.html";
     });
   </script>
 

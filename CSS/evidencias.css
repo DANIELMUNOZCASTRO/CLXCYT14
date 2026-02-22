@@ -16,13 +16,15 @@ body{
   color: var(--text);
 }
 
-/* Encabezado */
-.site-header.single-logo{
-  display: flex;
-  flex-direction: column;
+/* Encabezado (igual que Inicio) */
+.site-header{
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 14px;
-  padding: 28px 16px 8px;
+  gap: 28px;
+  padding: 28px 40px 8px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .logo-header{
@@ -190,7 +192,7 @@ h5{
   border: 1px solid rgba(117,9,70,.25);
 }
 
-/* ✅ Botón eliminar */
+/* Botón eliminar */
 .btn-small.danger{
   background: #b91c1c;
   color: #fff;
@@ -250,7 +252,17 @@ iframe{
 
 /* Responsive */
 @media (max-width: 720px){
-  .logo-header{ height: 96px; }
+  .site-header{
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 22px 16px 0;
+  }
+
+  .logo-header{
+    height: 96px;
+    margin: 0 auto;
+  }
+
   .header-text h1{ font-size: 34px; }
   iframe{ height: 420px; }
 }

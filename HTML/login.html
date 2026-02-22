@@ -4,15 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CELEX – Inicio de sesión</title>
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="../CSS/login.css">
+  <link rel="stylesheet" href="/CSS/login.css">
 </head>
 <body>
 
-  <!-- ENCABEZADO -->
   <header class="site-header">
-    <img src="../RECURSOS/Logo_ipn.png" alt="IPN" class="logo-header">
+    <img src="/LOGOS/LogoIPN.png" alt="IPN" class="logo-header">
 
     <div class="header-text">
       <h1>CELEX</h1>
@@ -20,35 +17,23 @@
       <h3>CECyT No. 14 · Luis Enrique Erro</h3>
     </div>
 
-    <img src="../RECURSOS/Logo_cecyt14.png" alt="CECyT 14" class="logo-header">
+    <img src="/LOGOS/LogoCecyt14.png" alt="CECyT 14" class="logo-header">
   </header>
 
-  <!-- LOGIN -->
   <main class="page">
     <section class="card">
-
       <h4 class="login-title">Inicio de sesión</h4>
       <p class="login-sub">Accede con tu usuario y contraseña</p>
 
       <form class="form" id="loginForm">
         <label class="field">
           <span>Usuario</span>
-          <input
-            type="text"
-            name="usuario"
-            placeholder="Número de boleta / usuario"
-            required
-          >
+          <input type="text" name="usuario" placeholder="Número de boleta / usuario" required>
         </label>
 
         <label class="field">
           <span>Contraseña</span>
-          <input
-            type="password"
-            name="password"
-            placeholder="Contraseña"
-            required
-          >
+          <input type="password" name="password" placeholder="Contraseña" required>
         </label>
 
         <div class="row">
@@ -62,29 +47,11 @@
 
         <button class="btn" type="submit">Entrar</button>
       </form>
-
     </section>
   </main>
 
-  <footer class="footer">
-    © 2026 Instituto Politécnico Nacional
-  </footer>
+  <footer class="footer">© 2026 Instituto Politécnico Nacional</footer>
 
-  <!-- JS -->
-  <script>
-    document.getElementById("loginForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      const usuario = e.target.usuario.value;
-      const password = e.target.password.value;
-
-      if (usuario === "EdwinClx" && password === "123456") {
-        window.location.href = "inicio.html";
-      } else {
-        alert("Usuario o contraseña incorrectos");
-      }
-    });
-  </script>
-
+  <script src="/JS/login.js"></script>
 </body>
 </html>
